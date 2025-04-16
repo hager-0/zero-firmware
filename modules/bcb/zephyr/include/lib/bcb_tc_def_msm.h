@@ -65,6 +65,7 @@ typedef struct bcb_msm_config {
 	bool rec_enabled; /**< Set to true if recovery is enabled. */
 	uint16_t rec_attempts; /**< Number of recovery attempts. */
 	uint32_t rec_delay; /**< Recovery delay in microseconds. */
+	uint32_t recovery_reset_timeout_ms;
 } bcb_tc_def_msm_config_t;
 
 /**

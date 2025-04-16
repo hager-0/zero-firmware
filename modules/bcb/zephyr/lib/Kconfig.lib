@@ -19,7 +19,6 @@ config BCB_TRIP_CURVE_DEFAULT_RECOVERY_RESET_TIMER_TIMEOUT
     int "Default recovery reset timer timeout (ms)"
     default 2000  
 
-
 menu "Timing"
 	config BCB_LIB_ETIME_SECOND
 		int "Number of ticks for one second of the elapsed time timer"

@@ -152,7 +152,7 @@ static inline void msm_on_sw_closed_at_close_wait(void)
 	msm_data.state = BCB_TC_DEF_MSM_STATE_CLOSED;
 	if (msm_data.recovery_remaining < msm_data.config.rec_attempts) {
 		k_delayed_work_submit(&msm_data.recovery_reset_work,
-				      K_MSEC(RECOVERY_RESET_WORK_TIMEOUT));
+				      K_MSEC(msm_data.config.recovery_reset_timeout_ms));
 	}
 }
 
@@ -308,6 +308,7 @@ static void load_default_config(void)
 	msm_data.config.rec_enabled = false;
 	msm_data.config.rec_attempts = 0;
 	msm_data.config.rec_delay = 1000 * RECOVERY_WORK_TIMEOUT;
+	msm_data.config.recovery_reset_timeout_ms = RECOVERY_RESET_WORK_TIMEOUT;
 }
 
 int bcb_tc_def_msm_init(struct k_work *notify_work)
@@ -449,6 +450,10 @@ int bcb_tc_def_msm_config_set(bcb_tc_def_msm_config_t *config)
 	if (config->csom >= BCB_TC_DEF_MSM_CSOM_END) {
 		LOG_ERR("invalid csom: %d", config->csom);
 		return -EINVAL;
+	}
+
+    if (config->recovery_reset_timeout_ms < 100 ||  config->recovery_reset_timeout_ms > 10000) {
+        return -EINVAL;  
 	}
 
 	memcpy(&msm_data.config, config, sizeof(bcb_tc_def_msm_config_t));
